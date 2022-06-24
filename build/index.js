@@ -10,6 +10,6 @@ const index_1 = __importDefault(require("./routes/index"));
 app.get("/", (req, res) => {
     res.send("welcome to image processing API");
 });
-app.use(index_1.default);
+app.use("/api", index_1.default);
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 exports.default = app;

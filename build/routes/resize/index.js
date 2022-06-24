@@ -54,13 +54,19 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             .status(400)
             .send("Bad request, image width and hieght can't be more than 2000");
     }
-    fs_1.default.access(resizedImage, (err) => {
+    fs_1.default.access(resizedImage, (err) => __awaiter(void 0, void 0, void 0, function* () {
         if (err) {
-            (0, resize_1.default)(req, res, imgLocation, currentWidth, currentHirght);
+            try {
+                yield (0, resize_1.default)(imgLocation, name, currentWidth, currentHirght);
+                res.sendFile(resizedImage);
+            }
+            catch (error) {
+                res.status(404).send("Something went wrong!!");
+            }
         }
         else {
             res.sendFile(resizedImage);
         }
-    });
+    }));
 }));
 exports.default = router;

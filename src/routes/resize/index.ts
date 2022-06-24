@@ -17,7 +17,6 @@ router.get("/", async (req: Request, res: Response) => {
   const currentWidth: number = parseInt(width);
   const hieght = req.query.hieght as unknown as string;
   const currentHirght: number = parseInt(hieght);
-
   const imgLocation = path.resolve("./") + `/images/${name}.jpg`;
   const resizedImage =
     path.resolve("./") + `/images/thumbnails/${name}_${width}_${hieght}.png`;
@@ -49,9 +48,14 @@ router.get("/", async (req: Request, res: Response) => {
       .send("Bad request, image width and hieght can't be more than 2000");
   }
 
-  fs.access(resizedImage, (err) => {
+  fs.access(resizedImage, async (err) => {
     if (err) {
-      resizeFunc(req, res, imgLocation, currentWidth, currentHirght);
+      try {
+        await resizeFunc(imgLocation, name, currentWidth, currentHirght);
+        res.sendFile(resizedImage);
+      } catch (error) {
+        res.status(404).send("Something went wrong!!");
+      }
     } else {
       res.sendFile(resizedImage);
     }

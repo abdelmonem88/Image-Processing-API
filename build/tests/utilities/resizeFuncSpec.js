@@ -12,11 +12,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const sharp_1 = __importDefault(require("sharp"));
-const resizeFunc = (imgLocation, currentImageName, currentWidth, currentHirght) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield (0, sharp_1.default)(imgLocation)
-        .resize(currentWidth, currentHirght)
-        .toFile(`images/thumbnails/${currentImageName}_${currentWidth}_${currentHirght}.png`);
-    return result;
+const path_1 = __importDefault(require("path"));
+const resize_1 = __importDefault(require("../../utilities/resize"));
+describe("test resize function", () => {
+    it("test for right params", () => __awaiter(void 0, void 0, void 0, function* () {
+        const imgLocation = path_1.default.resolve("./") + `/images/fjord.jpg`;
+        const result = yield (0, resize_1.default)(imgLocation, "fjord", 200, 300);
+        expect(result).toEqual({
+            format: "png",
+            width: 200,
+            height: 300,
+            channels: 3,
+            premultiplied: false,
+            size: 124133,
+        });
+    }));
 });
-exports.default = resizeFunc;
