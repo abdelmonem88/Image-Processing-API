@@ -7,7 +7,7 @@ import router from "./routes/index";
 app.get("/", (req: Request, res: Response) => {
   res.send("welcome to image processing API");
 });
-app.use(router);
+app.use("/api", router);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
